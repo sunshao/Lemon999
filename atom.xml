@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title><![CDATA[3C柠檬]]></title>
-  <subtitle><![CDATA[A Tale of Lemon lemon story]]></subtitle>
+  <subtitle><![CDATA[简单不先于复杂，而是在复杂之后.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://lemon999.com/"/>
   <updated>2015-03-13T06:36:33.150Z</updated>
   <id>http://lemon999.com/</id>
   
   <author>
-    <name><![CDATA[昊天]]></name>
+    <name><![CDATA[3C柠檬]]></name>
     <email><![CDATA[tianshilei1010@163.com]]></email>
   </author>
   
