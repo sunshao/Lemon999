@@ -4,22 +4,36 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>3C柠檬</title>
+    <title>DOJO 优化之打包(DOJO Get Build) | 3C柠檬</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="3C柠檬">
     
 
     
-    <meta name="description" content="lemon999,java,javescript,dojo,软件开发,程序员,3C柠檬">
-<meta property="og:type" content="website">
-<meta property="og:title" content="3C柠檬">
-<meta property="og:url" content="http://lemon999.com/index.html">
+    <meta name="description" content="引言
+我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这篇文章是因为有个朋友那天问我怎么打包(build)，我之前确实build过，不过我在上一次的重做系统的时候把硬盘全都给格式化了，而且时间比较久了，我也忘了，所以打算写一篇文章来帮助需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOJO 优化之打包(DOJO Get Build)">
+<meta property="og:url" content="http://lemon999.com/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/index.html">
 <meta property="og:site_name" content="3C柠檬">
-<meta property="og:description" content="lemon999,java,javescript,dojo,软件开发,程序员,3C柠檬">
+<meta property="og:description" content="引言
+我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这篇文章是因为有个朋友那天问我怎么打包(build)，我之前确实build过，不过我在上一次的重做系统的时候把硬盘全都给格式化了，而且时间比较久了，我也忘了，所以打算写一篇文章来帮助需要">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70uitl.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70profiles.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70myapp.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70myappprofile.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70release.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70build.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10css.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10firstdir.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10buildcss.png">
+<meta property="og:image" content="http://7xi2t8.com1.z0.glb.clouddn.com/lemon99929029135.gif">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="3C柠檬">
-<meta name="twitter:description" content="lemon999,java,javescript,dojo,软件开发,程序员,3C柠檬">
+<meta name="twitter:title" content="DOJO 优化之打包(DOJO Get Build)">
+<meta name="twitter:description" content="引言
+我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这篇文章是因为有个朋友那天问我怎么打包(build)，我之前确实build过，不过我在上一次的重做系统的时候把硬盘全都给格式化了，而且时间比较久了，我也忘了，所以打算写一篇文章来帮助需要">
 
     
     <link rel="alternative" href="/atom.xml" title="3C柠檬" type="application/atom+xml">
@@ -71,12 +85,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/" title="DOJO 优化之打包(DOJO Get Build)" itemprop="url">DOJO 优化之打包(DOJO Get Build)</a>
@@ -90,9 +102,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <h2 id="引言">引言</h2><blockquote>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包后"><span class="toc-number">2.</span> <span class="toc-text">打包后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">3.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-70版本"><span class="toc-number">4.</span> <span class="toc-text">1.70版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-10-4版本"><span class="toc-number">5.</span> <span class="toc-text">1.10.4版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS的Build"><span class="toc-number">5.1.</span> <span class="toc-text">CSS的Build</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#profile-js"><span class="toc-number">5.2.</span> <span class="toc-text">profile.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD命令"><span class="toc-number">5.3.</span> <span class="toc-text">CMD命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#build完成"><span class="toc-number">5.4.</span> <span class="toc-text">build完成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number">6.</span> <span class="toc-text">结束</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="引言">引言</h2><blockquote>
 <p>我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这篇文章是因为有个朋友那天问我怎么打包(build)，我之前确实build过，不过我在上一次的重做系统的时候把硬盘全都给格式化了，而且时间比较久了，我也忘了，所以打算写一篇文章来帮助需要打包的各位，也可以说是帮自己把这个build的过程给记录下来，免得以后忘记了还要像这次一样重新来过。（dojo官网已经改版，什么时候改的我真不知道。<a href="http://dojotoolkit.org/" target="_blank" rel="external">DOJO官网</a>，<a href="http://dojotoolkit.org/documentation/tutorials/1.10/build/index.html" target="_blank" rel="external">DOJO官网中关于Build的文档</a>）。</p>
 </blockquote>
 <h2 id="打包后">打包后</h2><p>1.压缩 Javascript 文件，包括：<br>  a.  删除所有的空格和空行<br>  b.  删除所有的注释<br>  c.  将定义变量名用更简短的字符代替<br>2.将所有打包的的 Javascript 文件的内容合并为一个文件经过压缩处理，Javascript 文件的大小总体可减少 30%-50%，同时将所有的 Javascript 文件打包成一个文件也减少了浏览器加载时多次开闭文件的负担，从而降低了加载时间。</p>
@@ -296,14 +315,9 @@
 </blockquote>
 <p><a href="http://dojotoolkit.我们也只是org/documentation/tutorials/1.10/build/index.html" target="_blank" rel="external">DOJO官网的Build文档</a></p>
 <p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon99929029135.gif" alt="3C柠檬"></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
@@ -321,166 +335,47 @@
 
 
 
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lemon999.com/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/" data-title="DOJO 优化之打包(DOJO Get Build) | 3C柠檬" data-tsina="2479331025" class="share clearfix">
+	  </div>
+	
+	</div>
 
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015-04-17/DOJO-优化之打包-DOJO-Get-Build/" data-count-type="comments">&nbsp;</a>
-	
-</div>
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015-04-07/第一篇文章-Markdown/" title="第一篇文章(Markdown)" itemprop="url">第一篇文章(Markdown)</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://lemon999.com/about" title="3C柠檬" target="_blank" itemprop="author">3C柠檬</a>
-		
-  <p class="article-time">
-    <time datetime="2015-04-07T07:16:22.000Z" itemprop="datePublished"> 发表于 2015-04-07</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="准备工作">准备工作</h2><h3 id="window7操作系统，MarkdownPad_2软件，Hexo博客环境">window7操作系统，MarkdownPad 2软件，Hexo博客环境</h3><blockquote>
-<p>我只是一个普通的码农，买不起高富帅专用道具Mac</p>
-</blockquote>
-<h2 id="创建文章">创建文章</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"第一篇文章(Markdown)"</span></span><br></pre></td></tr></table></figure>
-<h3 id="在hexo的目录下有个source文件夹，找到_posts文件夹，就会看到我们刚建的文章，然后用MarkdownPad_2打开它。(图一)">在hexo的目录下有个source文件夹，找到_posts文件夹，就会看到我们刚建的文章，然后用MarkdownPad 2打开它。(图一)</h3><blockquote>
-<p>我在创建的时候选择的默认的layout，所以会在_posts文件夹，还有你会发现里面所以的文章都是.md的结尾，因为这些都是Markdown书写的，图灵社区发帖采用的是流行的Markdown语法。 （<a href="http://www.ituring.com.cn/" target="_blank" rel="external">图灵社区</a>）</p>
-</blockquote>
-<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon999QQ截图20150407153038.png" alt="图一"></p>
-<h2 id="用Markdown的语法来进行本次文章的编辑">用Markdown的语法来进行本次文章的编辑</h2><blockquote>
-<p>推荐一个学习Markdown的学习网站。<a href="http://www.jianshu.com/p/1e402922ee32/" target="_blank" rel="external">Markdown——入门指南</a> (其实Markdown很简单，网上这种学习网站很多，大家因人而异)</p>
-</blockquote>
-<h2 id="最后看一下本篇文章的Markdown语法吧">最后看一下本篇文章的Markdown语法吧</h2><hr>
-<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.png" alt="本篇文章"></p>
-<hr>
-<h6 id="其实我也是现学现卖，希望大家可以多多交流，图片需要url，无法访问本地图片，我的图片全都放在了七牛,希望大家不要吐槽我的低端。">其实我也是现学现卖，希望大家可以多多交流，图片需要url，无法访问本地图片，我的图片全都放在了七牛,希望大家不要吐槽我的低端。</h6><hr>
-<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon99929029135.gif" alt="lemon999"> </p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Markdown/">Markdown</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Hexo/">Hexo</a><a href="/tags/Markdown/">Markdown</a><a href="/tags/MarkdownPad-2/">MarkdownPad 2</a><a href="/tags/Windows/">Windows</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
-	  	<span></span>
-		<a href="/2015-04-07/第一篇文章-Markdown/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015-04-07/第一篇文章-Markdown/" data-count-type="comments">&nbsp;</a>
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015-04-07/第一篇文章-Markdown/"  title="第一篇文章(Markdown)">
+ <strong>下一篇：</strong><br/> 
+ <span>第一篇文章(Markdown)
+</span>
+</a>
+</div>
+
+</nav>
+
 	
-</div>
-
-</footer>
-
-
-    </article>
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015-04-17/DOJO-优化之打包-DOJO-Get-Build/" data-title="DOJO 优化之打包(DOJO Get Build)" data-url="http://lemon999.com/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/"></div>
+</section>
 
 
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015-03-19/hello-world/" title="Hello World" itemprop="url">Hello World</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://lemon999.com/about" title="3C柠檬" target="_blank" itemprop="author">3C柠檬</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-19T07:53:09.296Z" itemprop="datePublished"> 发表于 2015-03-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015-03-19/hello-world/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015-03-19/hello-world/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包后"><span class="toc-number">2.</span> <span class="toc-text">打包后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">3.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-70版本"><span class="toc-number">4.</span> <span class="toc-text">1.70版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-10-4版本"><span class="toc-number">5.</span> <span class="toc-text">1.10.4版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS的Build"><span class="toc-number">5.1.</span> <span class="toc-text">CSS的Build</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#profile-js"><span class="toc-number">5.2.</span> <span class="toc-text">profile.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD命令"><span class="toc-number">5.3.</span> <span class="toc-text">CMD命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#build完成"><span class="toc-number">5.4.</span> <span class="toc-text">build完成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束"><span class="toc-number">6.</span> <span class="toc-text">结束</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -636,12 +531,69 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
 
 
 
@@ -662,6 +614,27 @@ $(document).ready(function(){
 
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
 
 
 
@@ -698,4 +671,4 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>

@@ -4,7 +4,7 @@
   <subtitle><![CDATA[简单不先于复杂，而是在复杂之后.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://lemon999.com/"/>
-  <updated>2015-04-07T07:44:18.147Z</updated>
+  <updated>2015-04-20T05:33:28.596Z</updated>
   <id>http://lemon999.com/</id>
   
   <author>
@@ -13,6 +13,230 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[DOJO 优化之打包(DOJO Get Build)]]></title>
+    <link href="http://lemon999.com/2015-04-17/DOJO-%E4%BC%98%E5%8C%96%E4%B9%8B%E6%89%93%E5%8C%85-DOJO-Get-Build/"/>
+    <id>http://lemon999.com/2015-04-17/DOJO-优化之打包-DOJO-Get-Build/</id>
+    <published>2015-04-17T05:32:38.000Z</published>
+    <updated>2015-04-20T05:33:28.596Z</updated>
+    <content type="html"><![CDATA[<h2 id="引言">引言</h2><blockquote>
+<p>我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这篇文章是因为有个朋友那天问我怎么打包(build)，我之前确实build过，不过我在上一次的重做系统的时候把硬盘全都给格式化了，而且时间比较久了，我也忘了，所以打算写一篇文章来帮助需要打包的各位，也可以说是帮自己把这个build的过程给记录下来，免得以后忘记了还要像这次一样重新来过。（dojo官网已经改版，什么时候改的我真不知道。<a href="http://dojotoolkit.org/" target="_blank" rel="external">DOJO官网</a>，<a href="http://dojotoolkit.org/documentation/tutorials/1.10/build/index.html" target="_blank" rel="external">DOJO官网中关于Build的文档</a>）。</p>
+</blockquote>
+<h2 id="打包后">打包后</h2><p>1.压缩 Javascript 文件，包括：<br>  a.  删除所有的空格和空行<br>  b.  删除所有的注释<br>  c.  将定义变量名用更简短的字符代替<br>2.将所有打包的的 Javascript 文件的内容合并为一个文件经过压缩处理，Javascript 文件的大小总体可减少 30%-50%，同时将所有的 Javascript 文件打包成一个文件也减少了浏览器加载时多次开闭文件的负担，从而降低了加载时间。</p>
+<h2 id="准备工作">准备工作</h2><p>dojo源码一份，安装JDK或者nodejs，这里我只用JDK进行build( 尽量使用 1.5 以上的版本 )，设置 JAVA_HOME 环境变量，还有本人用的是Window系统,我会用1.70和1.10.4两个版本分别进行build。</p>
+<h2 id="1-70版本">1.70版本</h2><p><a href="http://download.dojotoolkit.org/release-1.70" target="_blank" rel="external">下载地址</a>   </p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70.png" alt="图1"></p>
+<p>我们打包就需要用到util工具文件夹里面的buildscripts如图2所示</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70uitl.png" alt="图2"></p>
+<p>该文件中包含了DOJO打包所需要的所有文件，profiles文件夹中包含了DOJO官方提供的打包参考实例如图3所示</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70profiles.png" alt="图3"></p>
+<p>接下来我们就要编写打包的文件了，就是如图3中的.profile.js结尾的这类文件，下面看一下我的myapp.profile.js里面的内容如图4所示</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70myapp.png" alt="图4"></p>
+<blockquote>
+<p>这里我提醒一下这个profile.js文件很重要，有一点点写错的话打包就不能通过。</p>
+</blockquote>
+<p>我们来说一下里面的mydojo.js，这是我们打包后形成的我们定制的dojo的核心js(跟dojo这个文件夹里面的dojo.js一样)；dependencies这里你发现”dojo.data”,”dojo.uuid”是我们有时候会用的js，没错，这就是你在项目中用到的js,把你在项目用到dojo中有关js请全都放到里面去，当然build程序会按dojo.require 等关键字将依赖文件添加进来，因此在每个 layer 的 dependencies 中我们不必列出所有我们需要打包的文件，只需要将一些根文件列出既可，下面的就是我们自己编写的 Javascript 文件，我们同样可是借助 Dojo 提供的 build 工具进行压缩和打包，前提是这些 js 文件需要按照 Dojo 相关的的规范编写。打包我们自己的 Javascript 文件与打包 Dojo 文件并没有太大的差别。</p>
+<p>我执行的打包文件如图5所示(没有打包自己的Javascript 文件)：</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70myappprofile.png" alt="图5"></p>
+<p>接下来就是要执行cmd命令：   </p>
+<ol>
+<li>首先用cmd命令切换到util文件下的buildscripts文件夹   </li>
+<li>执行build命令<pre><code class="bash">build profile=myapp action=release releaseName=myapp optimize=shrinksafe
+</code></pre>
+</li>
+</ol>
+<p>该命令中包括了几个最常用的参数，其意义如下：  </p>
+<ol>
+<li>action: 指定本次命令的类型，提供的三个值是：clean, release, help；  </li>
+<li>releaseName：本次 release 的名字，默认为 dojo；  </li>
+<li>optimize：本次 build 中进行优化的方式，一般使用 shrinksafe 既可；  </li>
+<li>profile：指定 build 使用的 profile 文件，profile 文件中提供了 build 相关的配置信息，在 \dojo\util\buildsrcipts\profiles 目录下有很多 *.profile.js 文件，我们自定义的 profile 文件也放在这个目录下，例子中“profile=base”表示指定 base.profile.js 作为 build 的参数。</li>
+</ol>
+<p>等待执行完成后会看到在src下会生成一个新的文件夹release，我们看一下里面的内容如图6所示: </p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70release.png" alt="图6"></p>
+<p>mydojo.js 和 mydojo.uncompressed.js：打包的是我们定制的 Dojo 文件<br>mydojo 文件夹是我们打包后生成的打包文件如图7所示:</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.70build.png" alt="图7"></p>
+<p>到此为止我们的打包就结束了，那有的人会问在项目中怎么引用呢，我的引用方法是其他的都不变，只是要把mydojo.js引用到项目中即可（css文件是可以打包的，但是我在1.80中没有成功过，但是在1.80++中成功了）。</p>
+<h2 id="1-10-4版本">1.10.4版本</h2><p><a href="http://download.dojotoolkit.org/release-1.10.4" target="_blank" rel="external">下载地址</a>   </p>
+<p>这个版本的跟1.70版本的打包大体相同，区别在于profile.js这个文件，以及cmd命令,还有就是css的build。</p>
+<h3 id="CSS的Build">CSS的Build</h3><p>废话不多说先上图看一下要build的css文件如图8所示:</p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10css.png" alt="图8"></p>
+<p>你看到很多的@import，这些被引用到的css都是我在项目要用的css文件，当然下面还有自定义的css，要build css之前需要准备这么一个css文件，至于位置你自己看着放好了。</p>
+<h3 id="profile-js">profile.js</h3><p>看下一我们的profile.js文件里面的内容如下所示   </p>
+<pre><code><span class="keyword">var</span> profile = (<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{
+<span class="keyword">return</span> {  
+    basePath: <span class="string">"../../dojo-release-1.10.4-src"</span>,<span class="comment">///相对于本文件的路径，接下类的编译都从这里开始计算。关联编译配置的文件位置。  </span>
+    releaseDir: <span class="string">"../../app/dojo-1.10.4-min"</span>,<span class="comment">///相对于 basePath，编译目标目录，编译器会覆盖它发现的一切。  </span>
+    releaseName: <span class="string">"app"</span>,  
+    action: <span class="string">"release"</span>,<span class="comment">//一般就这样写，不要修改。</span>
+    layerOptimize: <span class="string">"closure"</span>,
+    optimize: <span class="string">"closure"</span>,
+    cssOptimize: <span class="string">"comments"</span>,
+    mini: <span class="keyword">true</span>,
+    stripConsole: <span class="string">"warn"</span>,
+    selectorEngine: <span class="string">"lite"</span>,
+    defaultConfig: {<span class="comment">///应用中的 html 中需要的 dojoConfig  </span>
+        hasCache:{  
+            <span class="string">"dojo-built"</span>: <span class="number">1</span>,  
+            <span class="string">"dojo-loader"</span>: <span class="number">1</span>,  
+            <span class="string">"config-selectorEngine"</span>: <span class="string">"lite"</span>,  
+            <span class="string">"dom"</span>: <span class="number">1</span>,  
+            <span class="string">"host-browser"</span>: <span class="number">1</span>  
+        },    
+        async: <span class="number">1</span>
+    },  
+    staticHasFeatures: {<span class="comment">//build 时使用的额外的 dojoConfig  </span>
+        <span class="string">"config-deferredInstrumentation"</span>: <span class="number">1</span>,<span class="comment">//是否自动加载那些会报告un-handled rejected promises的代码  </span>
+        <span class="string">"config-dojo-loader-catches"</span>: <span class="number">1</span>,<span class="comment">//是否 catch 加载模块时的error handling  </span>
+        <span class="string">"config-tlmSiblingOfDojo"</span>: <span class="number">0</span>,<span class="comment">//是否支持非标准的模块解析代码  </span>
+        <span class="string">"dojo-amd-factory-scan"</span>: <span class="number">0</span>,<span class="comment">//是否扫描所有的模块对AMD的支持  </span>
+        <span class="string">"dojo-combo-api"</span>: <span class="number">0</span>,<span class="comment">//是否支持一些老式的加载器API  </span>
+        <span class="string">"dojo-config-api"</span>: <span class="number">1</span>,<span class="comment">//是否保证 build 是可以配置的  </span>
+        <span class="string">"dojo-config-require"</span>: <span class="number">1</span>,<span class="comment">//是否可以配置require()  </span>
+        <span class="string">"dojo-debug-messages"</span>: <span class="number">1</span>,<span class="comment">//是否包含检测diagnostic 信息  </span>
+        <span class="string">"dojo-dom-ready-api"</span>: <span class="number">1</span>,<span class="comment">//是否保证 DOM ready API 是可用的//设为0才能支持 Rhino  </span>
+        <span class="string">"dojo-firebug"</span>: <span class="number">1</span>,<span class="comment">//是否为那些没有开发者控制台（developer console）的浏览器启用firebug lite (e.g. IE6)  </span>
+        <span class="string">"dojo-guarantee-console"</span>: <span class="number">1</span>,<span class="comment">//是否使那些不能使用控制台的浏览器可以使用console(e.g. IE6)  </span>
+        <span class="string">"dojo-has-api"</span>: <span class="number">1</span>,<span class="comment">//是否使得 has 功能检测API 是可用的  </span>
+        <span class="string">"dojo-inject-api"</span>: <span class="number">1</span>,<span class="comment">//是否支持跨域加载模块  </span>
+        <span class="string">"dojo-loader"</span>: <span class="number">1</span>,<span class="comment">//是否使得加载器是可用的  </span>
+        <span class="string">"dojo-log-api"</span>: <span class="number">1</span>,<span class="comment">//是否记录加载器的日志？  </span>
+        <span class="string">"dojo-modulePaths"</span>: <span class="number">1</span>,<span class="comment">//是否支持那些和加载模块相关的老式API  </span>
+        <span class="string">"dojo-moduleUrl"</span>: <span class="number">1</span>,<span class="comment">//是否那些和加载模块相关的老式API  </span>
+        <span class="string">"dojo-publish-privates"</span>: <span class="number">1</span>,<span class="comment">//是否显示加载器的一些内部信息  </span>
+        <span class="string">"dojo-requirejs-api"</span>: <span class="number">1</span>,<span class="comment">//是否支持RequireJS。  </span>
+        <span class="string">"dojo-sniff"</span>: <span class="number">1</span>,<span class="comment">//是否当从一个CDN加载模块的时候，启用一些老式的模块加载行为？//设为0才能支持 Rhino  </span>
+        <span class="string">"dojo-sync-loader"</span>: <span class="number">0</span>,<span class="comment">//是否采用同步加载器  </span>
+        <span class="string">"dojo-test-sniff"</span>: <span class="number">1</span>,<span class="comment">//Disables some features for testing purposes.是否包含测试代码  </span>
+        <span class="string">"dojo-timeout-api"</span>: <span class="number">1</span>,<span class="comment">//Disables code dealing with modules that don’t load.？//设为0才能支持 Rhino  </span>
+        <span class="string">"dojo-trace-api"</span>: <span class="number">1</span>,<span class="comment">//Disables the tracing of module loading.是否跟踪模块加载过程  </span>
+        <span class="string">"dojo-undef-api"</span>: <span class="number">1</span>,<span class="comment">//是否包含对模块卸载的支持  </span>
+        <span class="string">"dojo-v1x-i18n-Api"</span>: <span class="number">1</span>,<span class="comment">//启动对v1.x 国际化加载的支持 （ Dijit需要使用）  </span>
+        <span class="string">"dojo-xhr-factory"</span>: <span class="number">1</span>,<span class="comment">///Rhino需要设为0  </span>
+        <span class="string">"dom"</span>: <span class="number">1</span>,<span class="comment">//Ensures the DOM code is available.保证DOM 代码可用//设为0才能支持 Rhino  </span>
+        <span class="string">"host-browser"</span>: <span class="number">1</span>,<span class="comment">//确定构建的代码是用于浏览器平台的//设为0才能支持 Rhino  </span>
+        <span class="string">"host-rhino"</span>: <span class="number">0</span>,  
+        <span class="string">"host-node"</span>: <span class="number">0</span>,  
+        <span class="string">"extend-dojo"</span>: <span class="number">1</span>,<span class="comment">//Ensures pre-Dojo 2.0 behavior is maintained.保证  pre-Dojo 2.0行为是被维护的。  </span>
+        <span class="string">"touch"</span>: <span class="number">1</span>,  
+        <span class="string">"dojo-bidi"</span> : <span class="number">0</span>,  
+        <span class="string">"dojo-parser"</span>: <span class="number">1</span>,  
+        <span class="string">"dojo-mobile-parser"</span>: <span class="number">1</span>  
+    }, 
+    packages:[{<span class="comment">///需要 build 系统处理的内容</span>
+        name: <span class="string">"dojo"</span>,
+        location: <span class="string">"../../dojo"</span><span class="comment">///相对于 basePath</span>
+    },{
+        name: <span class="string">"dijit"</span>,
+        location: <span class="string">"../../dijit"</span><span class="comment">///相对于 basePath</span>
+    },{
+        name: <span class="string">"dojox"</span>,
+        location: <span class="string">"../../dojox"</span><span class="comment">///相对于 basePath</span>
+    }],
+    layers: {<span class="comment">/// build 系统处理后生成的打包文件，一个 layer 对应一个文件。</span>
+        <span class="string">"dojo/dojo"</span>: {
+            <span class="keyword">include</span>: [                 <span class="comment">///合并到打包后的文件</span>
+                <span class="string">"dojo/parser"</span>,
+                <span class="string">"dojo/_base/array"</span>,
+                <span class="string">"dojo/_base/event"</span>, 
+                <span class="string">"dojo/on"</span>,                   
+                <span class="string">"dojo/store/JsonRest"</span>,
+                <span class="string">"dojo/store/Memory"</span>,
+                <span class="string">"dojo/store/Cache"</span>,
+                <span class="string">"dojo/data/ObjectStore"</span>,
+                <span class="string">"dojo/date/stamp"</span>,
+                <span class="string">"dojo/store/Observable"</span>,
+                <span class="string">"dojo/dom-prop"</span>,
+                <span class="string">"dojo/query"</span>,
+                <span class="string">"dojo/ready"</span>,
+                <span class="string">"dojo/cookie"</span>,
+                <span class="string">"dojo/throttle"</span>,
+                <span class="string">"dojo/_base/fx"</span>,
+                <span class="string">"dojo/fx"</span>,
+                <span class="string">"dojo/fx/easing"</span>,
+                <span class="string">"dojo/fx/Toggler"</span>,
+                <span class="string">"dojox/fx/_base"</span>
+            ]
+        },
+        <span class="string">"dijit/dijit"</span>: {
+            <span class="keyword">include</span>: [
+                <span class="string">"dijit/_base"</span>,
+                <span class="string">"dijit/_WidgetBase"</span>,
+                <span class="string">"dijit/_Widget"</span>,
+                <span class="string">"dijit/registry"</span>,
+                <span class="string">"dijit/_Container"</span>,
+                <span class="string">"dijit/form/_AutoCompleterMixin"</span>,
+                <span class="string">"dijit/form/_ButtonMixin"</span>,
+                <span class="string">"dijit/form/_FormMixin"</span>,
+                <span class="string">"dijit/form/_FormValueMixin"</span>,
+                <span class="string">"dijit/form/_FormValueWidget"</span>,
+                <span class="string">"dijit/form/_FormWidget"</span>,
+                <span class="string">"dijit/form/_FormWidgetMixin"</span>,
+                <span class="string">"dijit/form/Form"</span>,
+                <span class="string">"dijit/form/Button"</span>,
+                <span class="string">"dijit/form/ValidationTextBox"</span>,
+                <span class="string">"dijit/tree/_dndContainer"</span>,
+                <span class="string">"dijit/tree/_dndSelector"</span>,
+                <span class="string">"dijit/DialogUnderlay"</span>,
+                <span class="string">"dijit/Tooltip"</span>,
+                <span class="string">"dijit/TooltipDialog"</span>,
+                <span class="string">"dijit/Menu"</span>,
+                <span class="string">"dijit/MenuBar"</span>,
+                <span class="string">"dijit/MenuBarItem"</span>,
+                <span class="string">"dijit/MenuSeparator"</span>,
+                <span class="string">"dijit/PopupMenuItem"</span>,
+                <span class="string">"dijit/PopupMenuBarItem"</span>,
+                <span class="string">"dijit/Toolbar"</span>,
+                <span class="string">"dijit/ToolbarSeparator"</span>
+            ]
+        },
+        <span class="string">"dojox/dojox"</span>: {
+            <span class="keyword">include</span>: [
+                <span class="string">"dojox/layout/ContentPane"</span>,
+                <span class="string">"dojox/layout/ResizeHandle"</span>,
+                <span class="string">"dojox/grid/DataGrid"</span>,
+                <span class="string">"dojox/grid/EnhancedGrid"</span>,
+                <span class="string">"dojox/grid/enhanced/plugins/IndirectSelection"</span>,
+                <span class="string">"dojox/grid/enhanced/plugins/Pagination"</span>,
+                <span class="string">"dojox/grid/enhanced/plugins/Selector"</span>,
+                <span class="string">"dojox/grid/_CheckBoxSelector"</span>,
+                <span class="string">"dojox/layout/ResizeHandle"</span>,
+                <span class="string">"dojox/grid/cells"</span>
+            ] 
+        }
+    }
+};    
+})();
+</code></pre><blockquote>
+<p>具体的一些属性需要自己到官网上自己查看，我就不一一介绍了。</p>
+<h3 id="CMD命令">CMD命令</h3></blockquote>
+<pre><code class="bash">build.bat  --profile  /profiles/app.profile.js
+</code></pre>
+<h3 id="build完成">build完成</h3><p>看一下build完成后的目录结构<br><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10firstdir.png" alt="目录">    </p>
+<p>app就是我们build后自动生成的build过的dojo，其中我把要build的css放在了dijit文件下的resources文件夹内，现在看一下我们build过的css如图9所示<br><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon9991.10buildcss.png" alt="图9"></p>
+<blockquote>
+<p>那些我们import的css文件全都被我们抽取并且压缩到一个css文件里面了，这样子在请求时会减少请求数，来达到提速。</p>
+</blockquote>
+<h2 id="结束">结束</h2><p>到此为止我们就把dojo的build全都做了一遍了，我也只是一个菜鸟，不知道build过程中是不是做的全都正确，但是build完成后确实可以加快加载速度。  </p>
+<blockquote>
+<p>这篇文章主要是针对初学者来写的，有什么不对的地方可以留言。     </p>
+</blockquote>
+<p><a href="http://dojotoolkit.我们也只是org/documentation/tutorials/1.10/build/index.html" target="_blank" rel="external">DOJO官网的Build文档</a></p>
+<p><img src="http://7xi2t8.com1.z0.glb.clouddn.com/lemon99929029135.gif" alt="3C柠檬"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="引言">引言</h2><blockquote>
+<p>我在上家公司用过一年左右的dojo，版本为1.80，用过dojo的各位工程师们都知道1.80是dojo的一个分水岭，在1.80前的版本和1.80包括1.80++的会有区别，我为什么要写关于dojo build这]]>
+    </summary>
+    
+      <category term="DOJO" scheme="http://lemon999.com/tags/DOJO/"/>
+    
+      <category term="JAVASCRIPT" scheme="http://lemon999.com/tags/JAVASCRIPT/"/>
+    
+      <category term="DOJO" scheme="http://lemon999.com/categories/DOJO/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[第一篇文章(Markdown)]]></title>
